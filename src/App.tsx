@@ -1,6 +1,6 @@
 import "@mantine/core/styles.css";
-import { Flex, MantineProvider } from "@mantine/core";
-import TodoList from "./todo-list";
+import { MantineProvider } from "@mantine/core";
+
 import RestApi from "./restApi";
 
 function App() {

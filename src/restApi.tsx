@@ -1,8 +1,6 @@
 import {
-  Box,
   Button,
   Flex,
-  Group,
   Modal,
   Paper,
   Table,
@@ -10,11 +8,11 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { InferType, object, string } from "yup";
 import { useForm, yupResolver } from "@mantine/form";
-import { IconPencil, IconTrash, IconTrashFilled } from "@tabler/icons-react";
+import { IconPencil, IconTrashFilled } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 
 export default function RestApi() {

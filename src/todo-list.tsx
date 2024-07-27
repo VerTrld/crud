@@ -1,17 +1,8 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Input,
-  Notification,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Box, Button, Flex, Input, Text, Title } from "@mantine/core";
 import { useForm, yupResolver } from "@mantine/form";
 import { IconPencil, IconPlus, IconTrashFilled } from "@tabler/icons-react";
 import { useState } from "react";
 import { InferType, object, string } from "yup";
-import { Notifications } from "@mantine/notifications";
 
 export default function TodoList() {
   // Specify the type of listValue as string[]
@@ -91,7 +82,6 @@ export default function TodoList() {
                         }}
                       />
                     </Flex>
-                    <Notifications />
                   </Flex>
                 </>
               ))}
