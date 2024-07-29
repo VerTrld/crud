@@ -5,6 +5,7 @@ import {
   Paper,
   Table,
   Text,
+  Textarea,
   TextInput,
   Title,
 } from "@mantine/core";
@@ -18,16 +19,20 @@ import { useDisclosure } from "@mantine/hooks";
 export default function RestApi() {
   interface IPost {
     id: string;
-    name: string;
-    last: string;
-    email: string;
+    item: string;
+    price: string;
+    description: string;
+    type: string;
+    imageUrl: string;
   }
 
   const schema = object({
-    id: string().required(),
-    name: string().required(),
-    last: string().required(),
-    email: string().required(),
+    id: string().optional(),
+    item: string().required(),
+    price: string().required(),
+    description: string().required(),
+    type: string().required(),
+    imageUrl: string().required(),
   });
 
   type IPostType = InferType<typeof schema>;
@@ -36,9 +41,11 @@ export default function RestApi() {
     validate: yupResolver(schema),
     initialValues: {
       id: "",
-      name: "",
-      last: "",
-      email: "",
+      item: "",
+      price: "",
+      description: "",
+      type: "",
+      imageUrl: "",
     },
   });
 
@@ -111,9 +118,10 @@ export default function RestApi() {
     apiData.map((v) => (
       <Table.Tr key={v.id}>
         <Table.Td ta={"center"}>{v.id}</Table.Td>
-        <Table.Td ta={"center"}> {v.name}</Table.Td>
-        <Table.Td ta={"center"}>{v.last}</Table.Td>
-        <Table.Td ta={"center"}> {v.email}</Table.Td>
+        <Table.Td ta={"center"}> {v.item}</Table.Td>
+        <Table.Td ta={"center"}> {v.price}</Table.Td>
+        <Table.Td>{v.description}</Table.Td>
+        <Table.Td ta={"center"}>{v.type}</Table.Td>
         <Table.Td ta={"center"}>
           <Flex direction={"row"} justify={"space-evenly"}>
             <IconPencil
@@ -133,67 +141,23 @@ export default function RestApi() {
     ));
 
   return (
-    // <Flex direction={"column"} justify={"center"} h={"100vh"} bg={"gray"}>
-    //   <Flex direction={"row"} justify={"space-around"}>
-    //     <Flex direction={"column"} w={"30%"}>
-    //       <form onSubmit={handleSubmit}>
-    //         <Flex direction={"column"} p={10} gap={10}>
-    //           <TextInput
-    //             label={"ID"}
-    //             {...form.getInputProps("id")}
-    //             disabled={editMode}
-    //           />
-    //           <TextInput label={"Name"} {...form.getInputProps("name")} />
-    //           <TextInput label={"Age"} {...form.getInputProps("age")} />
-    //           <TextInput label={"Address"} {...form.getInputProps("address")} />
-    //           <Button
-    //             p={5}
-    //             type="submit"
-    //             loading={loading}
-    //             loaderProps={{ type: "oval" }}
-    //           >
-    //             {editMode ? "Update" : "Submit"}
-    //           </Button>
-    //         </Flex>
-    //       </form>
-    //     </Flex>
-    //     <Flex direction="column" w={"50%"} h={"100%"}>
-    //       {apiData &&
-    //         apiData.map((v) => (
-    //           <div key={v.id}>
-    //             <Flex
-    //               direction={"row"}
-    //               gap={100}
-    //               align="center"
-    //               justify={"space-between"}
-    //             >
-    //               <Text>{v.id}</Text>
-    //               <Text>{v.name}</Text>
-    //               <Text>{v.age}</Text>
-    //               <Text>{v.address}</Text>
-    //               <Group>
-    //                 <IconPencil color="yellow" onClick={() => handleEdit(v)} />
-    //                 <IconTrash color="red" onClick={() => deleteSubmit(v.id)} />
-    //               </Group>
-    //             </Flex>
-    //           </div>
-    //         ))}
-    //     </Flex>
-    //   </Flex>
-    // </Flex>
-
     <Flex direction={"column"} h={"100vh"} w={"100%"}>
-      <Modal opened={opened} onClose={close} title="Authentication" centered>
+      <Modal
+        opened={opened}
+        onClose={close}
+        title={editMode ? "Update" : "Add"}
+        centered
+      >
         <form onSubmit={handleSubmit}>
           <Flex direction={"column"} p={10} gap={10}>
-            <TextInput
-              label={"ID"}
-              {...form.getInputProps("id")}
-              disabled={editMode}
+            <TextInput label={"Item"} {...form.getInputProps("item")} />
+            <TextInput label={"Price"} {...form.getInputProps("price")} />
+            <TextInput label={"Type"} {...form.getInputProps("type")} />
+            <TextInput label={"ImageUrl"} {...form.getInputProps("imageUrl")} />
+            <Textarea
+              label="Description"
+              {...form.getInputProps("description")}
             />
-            <TextInput label={"Name"} {...form.getInputProps("name")} />
-            <TextInput label={"Last"} {...form.getInputProps("last")} />
-            <TextInput label={"Email"} {...form.getInputProps("email")} />
             <Button
               p={5}
               type="submit"
@@ -218,7 +182,7 @@ export default function RestApi() {
       </Flex>
       <Flex direction={"row"} justify={"space-between"} p={20} align={"center"}>
         <Text c={"#7D8ABC"} fw={600} size={"lg"}>
-          USERS
+          PC PARTS
         </Text>
         <Button
           bg={"#7D8ABC"}
@@ -237,10 +201,10 @@ export default function RestApi() {
       <Flex
         direction={"row"}
         justify={"center"}
-        h={"100%"}
+        flex={1}
         p={"0px 20px 20px 20px"}
       >
-        <Paper shadow="md" withBorder p="xl" w={"100%"} h={"100%"}>
+        <Paper shadow="md" withBorder p="xl" w={"100%"}>
           <Table withTableBorder>
             <Table.Thead>
               <Table.Tr>
@@ -248,16 +212,16 @@ export default function RestApi() {
                   ID
                 </Table.Th>
                 <Table.Th ta={"center"} c={"#304463"}>
-                  First
+                  Item
                 </Table.Th>
                 <Table.Th ta={"center"} c={"#304463"}>
-                  Last
+                  Price
                 </Table.Th>
                 <Table.Th ta={"center"} c={"#304463"}>
-                  Email
+                  Description
                 </Table.Th>
                 <Table.Th ta={"center"} c={"#304463"}>
-                  Action
+                  Type
                 </Table.Th>
               </Table.Tr>
             </Table.Thead>
